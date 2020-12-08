@@ -35,7 +35,7 @@ class WeatherModel {
 
     // Hack alert
     // Using local time to determine day or night icons rather than actual city time
-    // TODO: better way to handle day/night icons?
+    // TODO: Response includes a timezone value, use that to determine actual city time
     var now = new DateTime.now();
 
     if (now.hour > 6 && now.hour < 18) {

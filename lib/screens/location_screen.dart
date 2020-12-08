@@ -37,12 +37,12 @@ class _LocationScreenState extends State<LocationScreen> {
         cityName = '';
         return;
       }
+
       double temp = weatherData['main']['temp'];
       temperature = temp.toInt();
       var condition = weatherData['weather'][0]['id'];
       description = weatherData['weather'][0]['main'];
       humidity = weatherData['main']['humidity'];
-
       weatherIcon = weather.getWeatherIcon(condition);
       cityName = weatherData['name'];
     });
@@ -69,6 +69,15 @@ class _LocationScreenState extends State<LocationScreen> {
                     },
                     child: Icon(
                       Icons.near_me,
+                      size: 50.0,
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      // TODO: Add forecast screen
+                    },
+                    child: Icon(
+                      Icons.wb_sunny,
                       size: 50.0,
                     ),
                   ),
