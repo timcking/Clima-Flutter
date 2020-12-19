@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
 import 'package:clima/services/weather.dart';
 import 'package:clima/screens/city_screen.dart';
+import 'package:clima/screens/forecast_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:clima/utilities/utility.dart';
 
 class LocationScreen extends StatefulWidget {
   LocationScreen({this.locationWeather});
@@ -43,9 +45,22 @@ class _LocationScreenState extends State<LocationScreen> {
       var condition = weatherData['weather'][0]['id'];
       description = weatherData['weather'][0]['main'];
       humidity = weatherData['main']['humidity'];
-      weatherIcon = weather.getWeatherIcon(condition);
       cityName = weatherData['name'];
+
+      var epochDate = weatherData['dt'];
+      int hour = calcHour(epochDate);
+
+      weatherIcon = weather.getWeatherIcon(condition, hour);
     });
+  }
+
+
+  void getForecastData() async {
+    var forecastData = await WeatherModel().getCityForecast(cityName);
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ForecastScreen(forecastWeather: forecastData);
+    }));
   }
 
   @override
@@ -74,7 +89,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   ),
                   FlatButton(
                     onPressed: () {
-                      // TODO: Add forecast screen
+                      getForecastData();
                     },
                     child: Icon(
                       Icons.wb_sunny,

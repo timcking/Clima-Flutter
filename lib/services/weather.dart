@@ -4,13 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 const apiKey = 'b480375788a0883deaccdae75a9438b1';
-const url = 'https://api.openweathermap.org/data/2.5/weather';
+const urlWeather = 'https://api.openweathermap.org/data/2.5/weather';
+const urlForecast = 'https://api.openweathermap.org/data/2.5/forecast';
 const units = 'units=imperial';
 
 class WeatherModel {
+  Future<dynamic> getCityForecast(String cityName) async {
+    var url2 = '$urlForecast?q=$cityName&apiKey=$apiKey&$units';
+    NetworkHelper networkHelper = NetworkHelper(url2);
+
+    var weatherData = await networkHelper.getData();
+    return weatherData;
+  }
 
   Future<dynamic> getCityWeather(String cityName) async {
-    var url2 = '$url?q=$cityName&apiKey=$apiKey&$units';
+    var url2 = '$urlWeather?q=$cityName&apiKey=$apiKey&$units';
     NetworkHelper networkHelper = NetworkHelper(url2);
 
     var weatherData = await networkHelper.getData();
@@ -21,7 +29,7 @@ class WeatherModel {
     Location location = Location();
     await location.getCurrentLocation();
 
-    String myUrl = '$url?lat=${location.latitude}&lon=${location.longitude}&$units&appid=$apiKey';
+    String myUrl = '$urlWeather?lat=${location.latitude}&lon=${location.longitude}&$units&appid=$apiKey';
     // print(myUrl);
     NetworkHelper networkHelper = NetworkHelper(myUrl);
 
@@ -30,15 +38,13 @@ class WeatherModel {
     return weatherData;
   }
 
-  IconData getWeatherIcon(int condition) {
+  IconData getWeatherIcon(int condition, int hour) {
     String nightDay;
 
     // Hack alert
     // Using local time to determine day or night icons rather than actual city time
-    // TODO: Response includes a timezone value, use that to determine actual city time
-    var now = new DateTime.now();
 
-    if (now.hour > 6 && now.hour < 18) {
+    if (hour > 6 && hour < 18) {
       nightDay = 'day';
     } else {
       nightDay = 'night';
