@@ -40,6 +40,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
       String theDate = formatDate(epochDate);
       listDateTime.add(theDate);
 
+      // Forecast list
       int temp = forecastData['list'][i]['main']['temp'].toInt();
       String temperature = temp.toString();
 
@@ -49,6 +50,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
       forecastString = temperature +  '°' + '  ' + description;
       listForecast.add(forecastString);
 
+      // Icon list
       int hour = calcHour(epochDate);
       IconData weatherIcons = weather.getWeatherIcon(condition, hour);
       listIcons.add(weatherIcons);
